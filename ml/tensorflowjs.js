@@ -2,7 +2,7 @@ const natural = require('natural');
 const shuffle = require('shuffle-array');
 const EventEmitter = require('events');
 const tf = require('@tensorflow/tfjs');
-var tfNodeLoaded = false
+var tfNodeLoaded = false;
 try {
 require('@tensorflow/tfjs-node');
 tfNodeLoaded = true  
@@ -226,7 +226,7 @@ class Agent extends EventEmitter {
                                 }
                             }
                             //stem and lower each word
-                            var steamWords = wd.map(word => word.toLowerCase().stem())
+                            var steamWords = wd.map(word => natural.PorterStemmer.stem(word.toLowerCase()))
                             //add to words list the steam words
                             Array.prototype.push.apply(this.words, steamWords)
                             //add to documents in corpus
@@ -400,6 +400,7 @@ class Agent extends EventEmitter {
                 var i = 0;
                 this.classify(sentence).then((response) => {
                     var results = response.return_list;
+                    console.log("bot response: ", response);
                     //if we have a classification then find the matching intent tag
                     if (results && results.length > 0) {
                         //loop as long as there are matches to process
